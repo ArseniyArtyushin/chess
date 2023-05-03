@@ -65,10 +65,8 @@ def load_pieces():
     pieces[B_KING] = ImageTk.PhotoImage(Image.open("images/bK.png"))
 
 
-
 def keydown(event):
-    global lkd
-    lkd = event.keysym
+    pass
 
 
 def click(event):
