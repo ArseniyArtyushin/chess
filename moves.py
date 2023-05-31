@@ -89,6 +89,7 @@ def check_empty(board, si, sj, fi, fj):
 def make_move(board, si, sj, fi, fj):
     board[fj][fi] = board[sj][si]
     if si == fi and sj == fj:
+        f1 = -1
         pass
     else:
         board[sj][si] = SPACE

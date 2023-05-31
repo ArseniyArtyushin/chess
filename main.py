@@ -19,6 +19,7 @@ def new_game():
              [B_ROOK, B_KNIGHT, B_BISHOP, B_QUEEN, B_KING, B_BISHOP, B_KNIGHT, B_ROOK]]
     return board
 
+
 def show_figure():
     c.delete("all")
     for i in range(4):
@@ -51,7 +52,12 @@ def show_figure():
         c.create_rectangle((599, 44), (639, 4), outline="black", fill="black", width="5")
     else:
         c.create_rectangle((599, 44), (639, 4), outline="black", fill="white", width="5")
-
+    if Check_Win_White(board):
+        c.create_rectangle((0, 0), (640, 800), outline="white", fill="white", width="5")
+        c.create_text(320, 400, text="WHITE WIN", font='200')
+    if Check_Win_Black(board):
+        c.create_rectangle((0, 0), (640, 800), outline="#BD8926", fill="#BD8926", width="5")
+        c.create_text(320, 400, text="BLACK WIN", font='200')
 
 
 def load_pieces():
@@ -70,10 +76,12 @@ def load_pieces():
 
 
 def click(event):
-    global si, sj, fi, fj, lkd, lf
+    global si, sj, fi, fj, lkd, lf, end
     ci, cj = event.x // WIDTH, abs(event.y // HEIGHT - 8)
     print(board[cj][ci])
-    if (lf > 0 and board[cj][ci] > 0 and si == -1 and sj == -1) or (lf < 0 and board[cj][ci] < 0 and si == -1 and sj == -1):
+    if Check_Win_White(board) or Check_Win_Black(board):
+        return False
+    elif (lf > 0 and board[cj][ci] > 0 and si == -1 and sj == -1) or (lf < 0 and board[cj][ci] < 0 and si == -1 and sj == -1):
         return False
     else:
         if fi >= 0:
@@ -85,34 +93,65 @@ def click(event):
                 make_move(board, si, sj, ci, cj)
                 si = sj = fj = -1
                 fi = 0
+                lf *= -1
             if abs(board[sj][si]) == W_KNIGHT and knight_move(board, si, sj, ci, cj):
                 print(knight_move(board, si, sj, ci, cj))
                 make_move(board, si, sj, ci, cj)
                 si = sj = fj = -1
                 fi = 0
+                lf *= -1
             if abs(board[sj][si]) == W_BISHOP and bishop_move(board, si, sj, ci, cj):
                 print(bishop_move(board, si, sj, ci, cj))
                 make_move(board, si, sj, ci, cj)
                 si = sj = fj = -1
                 fi = 0
+                lf *= -1
             if abs(board[sj][si]) == W_ROOK and rook_move(board, si, sj, ci, cj):
                 print(rook_move(board, si, sj, ci, cj))
                 make_move(board, si, sj, ci, cj)
                 si = sj = fj = -1
                 fi = 0
+                lf *= -1
             if abs(board[sj][si]) == W_QUEEN and queen_move(board, si, sj, ci, cj):
                 print(queen_move(board, si, sj, ci, cj))
                 make_move(board, si, sj, ci, cj)
                 si = sj = fj = -1
                 fi = 0
+                lf *= -1
             if abs(board[sj][si]) == W_KING and king_move(board, si, sj, ci, cj):
                 print(king_move(board, si, sj, ci, cj))
                 make_move(board, si, sj, ci, cj)
                 si = sj = fj = -1
                 fi = 0
-            lf = board[cj][ci]
+                lf *= -1
     show_figure()
     print(si, sj, fi, fj)
+
+
+def Check_Win_White(board):
+    f1 = False
+    for i in range(0, 8):
+        for j in range(0, 8):
+            if board[i][j] == B_KING:
+                f1 = True
+    if not f1:
+        print("WHITE WIN")
+        return True
+    else:
+        return False
+
+
+def Check_Win_Black(board):
+    f2 = False
+    for i in range(0, 8):
+        for j in range(0, 8):
+            if board[i][j] == W_KING:
+                f2 = True
+    if not f2:
+        print("BLACK WIN")
+        return True
+    else:
+        return False
 
 
 pieces = {}
